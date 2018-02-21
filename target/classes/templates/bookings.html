@@ -1,0 +1,161 @@
+
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fa fa-table"></i> Bookings
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%"
+				cellspacing="0">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Patient Name</th>
+						<th>Date Of Visit</th>
+						<th>Time</th>
+						<th>Symtomps</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr th:each="p,stat : ${bookings}">
+						<td th:text="${stat.index+1}" />
+						<td>
+							<button type="button" class="btn btn-primary"
+								style="background-color: #ed552f; width: 100%"
+								data-toggle="modal" th:attr="data-target='#patientquere' + ${#strings.toUpperCase(p.firstname)}">
+								<span th:text="${p.firstname + ' ' + p.lastname}"></span>
+							</button>
+						</td>
+						<td th:text="${p.booking_date}" />
+						<td th:text="${p.booking_time}" />
+						<td th:text="${p.symtoms}" />
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+
+	</div>
+
+
+</div>
+
+<div>
+	<div th:each="pp : ${pps}">
+		<div class="modal fade" th:id="${'patientquere' + #strings.toUpperCase(pp?.firstname)}"
+			tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel1">Patient Q ER</h5>
+						<button class="close" type="button" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+						
+
+					</div>
+					<div class="modal-body">
+						<div class="col-md-12">
+							<div class="col-md-12">
+								<button type="button"
+									th:onclick="${'show(pateintinfo'+ pp.id + ');hide(providerinfo'+ pp.id + ')'}"
+									class="btn btn-danger waves-effect text-center"
+									style="width: 100%; font-size: 12pt">Visit</button>
+							</div>
+							<div class="col-md-12">
+								<button type="button"
+									th:onclick="${'hide(pateintinfo'+ pp.id + ');show(providerinfo'+ pp.id + ')'}"
+									class="btn btn-info waves-effect text-center"
+									style="width: 100%; font-size: 12pt">Provider Notes</button>
+							</div>
+						</div>
+
+						<div class="col-md-12" th:id="${'pateintinfo' + pp.id}">
+							<div class="col-md-4">
+								<h3 class="modal-title">Patient Information</h3>
+								<p class="text-left">
+									<span th:text="${pp.firstname} + ' ' + ${pp.lastname}"></span>
+									<br /> <span th:text="${pp.address}"></span> <br /> <span
+										th:text="${pp.city}"></span> <br /> <span th:text="${pp.zip}"></span>
+									<br /> <span th:text="${pp.email}"></span> <br /> <span
+										th:text="${pp.mobile}"></span>
+								</p>
+
+								<h3 class="modal-title">Emergency Information</h3>
+								<p class="text-left">
+									<span th:text="${pp.emergencyname} "></span> <br /> <span
+										th:text="${pp.emergencycontact}"></span> <br />
+								</p>
+								<h3 class="modal-title">Allergies</h3>
+								<p>
+									<span th:text="${pp.allergies}"></span>
+								</p>
+							</div>
+
+							<div class="col-md-4">
+								<h3 class="modal-title">Wait Time</h3>
+								<p>
+									<span th:text="${pp.waittime}"></span>
+								</p>
+								<h3 class="modal-title">Diagnosis</h3>
+								<span th:text="${pp.treatment}"></span>
+								<h3 class="modal-title">Symptoms</h3>
+								<p>
+									<span th:text="${pp.symptoms}"></span>
+								</p>
+							</div>
+							<div class="col-md-4">
+								<h3 class="modal-title">Last Visit</h3>
+								<span th:text="${pp.lastdatevisit}"></span>
+								<h3 class="modal-title">Treatment Time</h3>
+								<span th:text="${pp.waittime}"></span>
+								<h3 class="modal-title">Discharge</h3>
+								<span th:text="${pp.dispatchtime}"></span>
+							</div>
+						</div>
+						<div class="col-md-12" th:id="${'providerinfo' + pp.id}"
+							style="display: none;">
+							<div class="col-md-6">
+								<h3 class="modal-title">Provider Information</h3>
+								<p class="text-left">
+									<span th:text="${pp.providename}"></span> <br /> <br /> <span
+										th:text="${pp.provideremail}"></span> <br /> <span
+										th:text="${pp.providercontact}"></span> <br />
+								</p>
+							</div>
+							<div class="col-md-6">
+								<h3 class="modal-title">Notes</h3>
+
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<div class="pull-left">
+							<h4 align="left"></h4>
+
+						</div>
+					</div>
+				</div>
+				<script>
+					function show(id) {
+
+						id.style.display = '';
+					}
+					function hide(id) {
+						id.style.display = 'none';
+					}
+				</script>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	function open(id) {
+		document.getElementById(id).style.display = "block";
+		;
+	}
+</script>
